@@ -53,13 +53,26 @@ describe('Consultation Pad', () => {
       () => mockSocketConnection,
     )
 
+    const mockPatientDetails: PatientDetails = {
+      patientUuid: 'abc',
+      locationUuid: 'def',
+      isActiveVisit: true,
+    }
+
+    const value = {
+      patientDetails: mockPatientDetails,
+      savedConsultationNotes: '',
+      setSavedConsultationNotes: jest.fn(),
+    }
     const {unmount} = render(
-      <ConsultationPad
-        setShowConsultationPad={jest.fn()}
-        consultationText={consultationText}
-        setConsultationText={setConsultationText}
-        setSavedNotes={jest.fn()}
-      />,
+      <ConsultationContext.Provider value={value}>
+        <ConsultationPad
+          setShowConsultationPad={jest.fn()}
+          consultationText={consultationText}
+          setConsultationText={setConsultationText}
+        />
+        ,
+      </ConsultationContext.Provider>,
     )
 
     const mockOnIncomingMessage = (SocketConnection as jest.Mock).mock
@@ -99,13 +112,26 @@ describe('Consultation Pad', () => {
     ;(SocketConnection as jest.Mock).mockImplementation(
       () => mockSocketConnection,
     )
+    const mockPatientDetails: PatientDetails = {
+      patientUuid: 'abc',
+      locationUuid: 'def',
+      isActiveVisit: true,
+    }
+
+    const value = {
+      patientDetails: mockPatientDetails,
+      savedConsultationNotes: '',
+      setSavedConsultationNotes: jest.fn(),
+    }
     const {unmount} = render(
-      <ConsultationPad
-        setShowConsultationPad={jest.fn()}
-        consultationText={consultationText}
-        setConsultationText={setConsultationText}
-        setSavedNotes={jest.fn()}
-      />,
+      <ConsultationContext.Provider value={value}>
+        <ConsultationPad
+          setShowConsultationPad={jest.fn()}
+          consultationText={consultationText}
+          setConsultationText={setConsultationText}
+        />
+        ,
+      </ConsultationContext.Provider>,
     )
 
     const mockOnIncomingMessage = (SocketConnection as jest.Mock).mock

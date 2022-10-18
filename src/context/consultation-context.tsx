@@ -92,6 +92,7 @@ function ConsultationContextProvider({children}) {
         locationUuid: locationUuid,
         isActiveVisit: false,
       })
+      setSavedConsultationNotes('')
     }
   }, [patientUuid, locationUuid])
 

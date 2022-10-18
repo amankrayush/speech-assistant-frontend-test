@@ -58,7 +58,11 @@ export function ConsultationPadContents({
       onIncomingMessage,
       onRecording,
     )
-    addSaveButtonListener(patientDetails, closeConsultationPad, setSavedNotes)
+    addSaveButtonListener(
+      patientDetails,
+      closeConsultationPad,
+      setSavedConsultationNotes,
+    )
     return () => {
       if (isRecordingRef.current) {
         if (recordedTextRef.current != '') {
