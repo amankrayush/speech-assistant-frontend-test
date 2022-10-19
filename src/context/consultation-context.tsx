@@ -19,7 +19,7 @@ export interface PatientDetails {
 export interface ConsultationContextProps {
   patientDetails: PatientDetails
   savedConsultationNotes: string
-  setSavedConsultationNotes: Function
+  setSavedConsultationNotes: React.Dispatch<React.SetStateAction<string>>
 }
 
 export const ConsultationContext =

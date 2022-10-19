@@ -100,7 +100,7 @@ describe('Speech Assistant App', () => {
     expect(screen.getByRole('textbox')).toHaveValue('Saving Notes')
   })
 
-  it('should not show consultation pad button when there is no active visits for the patient in the set location', async () => {
+  it('should not show consultation pad button when there is no active visits for the patient in the set location',() => {
     Object.defineProperty(window, 'location', {
       value: {
         href: testSearchUrl,
@@ -115,7 +115,7 @@ describe('Speech Assistant App', () => {
 
     render(<App />)
 
-    await act(() => {
+    act(() => {
       window.location.href = testUrlWithPatientId
       window.dispatchEvent(new HashChangeEvent('hashchange'))
     })

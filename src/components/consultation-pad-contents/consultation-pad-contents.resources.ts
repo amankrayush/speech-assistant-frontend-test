@@ -60,7 +60,7 @@ export const saveObsData = async (
   postApiCall(saveNotesUrl, body).then(response => response.json())
 }
 
-export const updateObsData = async (obsUuid, consultationText) => {
+export const updateObsData = (obsUuid, consultationText) => {
   const body = {value: consultationText}
   postApiCall(updateObsUrl(obsUuid), body).then(response => response.json())
 }

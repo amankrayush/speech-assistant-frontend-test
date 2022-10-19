@@ -35,7 +35,7 @@ export const getConsultationObs = consultationActiveEncounter => {
   let consultationObs = null
   if (observations) {
     consultationObs = observations.find(obs => {
-      return obs.display.match(/^Consultation Note:/) != null
+      return obs.display.match(/^Consultation Note:/) !== null
     })
   }
   return consultationObs
