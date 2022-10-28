@@ -28,6 +28,7 @@ describe('Active Consultation', () => {
       patientUuid: 'abc',
       locationUuid: 'def',
       isActiveVisit: true,
+      providerUuid: '',
     }
 
     render(

@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {getApiCall} from '../utils/api-utils'
-import {defaultVisitUrl} from '../utils/constants'
+import {defaultVisitUrl, sessionUrl} from '../utils/constants'
 import {
   getLocationUuid,
   getPatientUuid,
@@ -10,29 +10,40 @@ export interface PatientDetails {
   patientUuid: string
   locationUuid: string
   isActiveVisit: boolean
+  providerUuid: string
 }
-async function fetchActiveVisits(patiendId, locationId) {
+async function fetchActiveVisit(patiendId, locationId) {
   const activeVisitResponse = await getApiCall(
     defaultVisitUrl(patiendId, locationId),
   )
   return activeVisitResponse?.results?.length > 0 ? true : false
 }
 
-export const ConsultationContext = React.createContext({} as PatientDetails)
+async function getProviderUuid() {
+  const response = await getApiCall(sessionUrl)
+  return response?.currentProvider?.uuid
+}
+
+export const ConsultationContext = React.createContext(null)
 
 function ConsultationContextProvider({children}) {
   const [patientDetails, setPatientDetails] = useState<PatientDetails>()
   const [patientUuid, setPatientUuid] = useState('')
   const [locationUuid, setLocationUuid] = useState('')
+  const providerUuidRef = useRef('')
 
   useEffect(() => {
     if (patientUuid && locationUuid) {
-      const activeVisit = fetchActiveVisits(patientUuid, locationUuid)
-      activeVisit.then(response => {
+      const activeVisitUuidResponse = fetchActiveVisit(
+        patientUuid,
+        locationUuid,
+      )
+      activeVisitUuidResponse.then(response => {
         setPatientDetails({
           patientUuid: patientUuid,
           locationUuid: locationUuid,
           isActiveVisit: response,
+          providerUuid: providerUuidRef.current,
         })
       })
     } else {
@@ -40,6 +51,7 @@ function ConsultationContextProvider({children}) {
         patientUuid: patientUuid,
         locationUuid: locationUuid,
         isActiveVisit: false,
+        providerUuid: providerUuidRef.current,
       })
     }
   }, [patientUuid, locationUuid])
@@ -51,6 +63,10 @@ function ConsultationContextProvider({children}) {
   useEffect(() => {
     setPatientUuid(getPatientUuid())
     setLocationUuid(getLocationUuid())
+    const providerUuidResponse = getProviderUuid()
+    providerUuidResponse.then(uuid => {
+      providerUuidRef.current = uuid
+    })
     window.addEventListener('hashchange', onUrlChangeCallback)
   }, [])
 
