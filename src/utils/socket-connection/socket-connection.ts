@@ -31,6 +31,7 @@ class SocketConnection {
       )
     } else if (action === SocketStatus.TERMINATED) {
       _this.onSocketConnectionChange(false)
+      _this.handlePunctuation('How are you')
     }
   }
 
@@ -40,6 +41,27 @@ class SocketConnection {
 
   handleStop = () => {
     this.streamingclient.stopStreaming()
+  }
+
+  handlePunctuation(input) {
+    console.log('Punctuation starts: ' + input)
+    const _this = this
+    if (input) {
+      console.log(this.streamingURL + '/v1/punctuate/en')
+      _this.streamingclient.punctuateText(
+        input,
+        '/v1/punctuate/en',
+        (status, sample) => {
+          console.log(sample)
+          console.log('punctuate', status)
+        },
+        (status, error) => {
+          console.log('Failed to punctuate', status, error)
+        },
+      )
+    } else {
+      return
+    }
   }
 }
 
